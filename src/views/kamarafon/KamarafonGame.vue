@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted} from 'vue'
-import {useStore} from "@/stores/store"
-import router from "@/router/index"
+import router from '@/router'
 import * as _ from 'lodash'
+import {useKamarafonStore} from '@/stores/kamarafon'
+import {numberToPath} from '@/cards/utils'
 
-const store = useStore()
+const store = useKamarafonStore()
 const level = +router.currentRoute.value.params.level
-const currentImage = store.imageIndexes[level];
-const image = `/pages/365_dney_seksa-${_.padStart(currentImage, 3, '0')}.jpg`
-const nextLevel = () => router.push({name: 'game', params: {level: level + 1}})
+const image = numberToPath(store.cardIds[level])
+const nextLevel = () => router.push({name: 'kamarafon-game', params: {level: level + 1}})
 
 const keyPressHandler = (e: KeyboardEvent) => {
   if (e.code !== 'Space') return
   nextLevel()
 }
 
-const clickListener = (e: MouseEvent) => nextLevel()
+const clickListener = (__: MouseEvent) => nextLevel()
 
 onMounted(() => document.addEventListener('keypress', keyPressHandler))
 onBeforeUnmount(() => document.removeEventListener('keypress', keyPressHandler))
@@ -31,7 +31,7 @@ onBeforeUnmount(() => document.removeEventListener('keypress', keyPressHandler))
 </template>
 
 <style lang="stylus" scoped>
-@import "../assets/colors.styl"
+@import "../../assets/colors.styl"
 
 main
   display flex
@@ -43,7 +43,6 @@ main
 
 .hud
   color $color-secondary-b-0
-  font-family Aventador
   font-size 2em
   position fixed
   top 0

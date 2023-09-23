@@ -3,9 +3,9 @@ import {RouterView} from 'vue-router'
 </script>
 
 <template>
-  <div class="menu">
-    <router-link :to="{name: 'home'}" class="button">↩</router-link>
-  </div>
+<!--  <div class="menu">-->
+<!--    <router-link to="/" class="button">↩</router-link>-->
+<!--  </div>-->
   <router-view v-slot="{Component, route}" class="page">
     <transition>
       <component :is="Component" :key="route.fullPath"></component>
@@ -15,28 +15,30 @@ import {RouterView} from 'vue-router'
 
 <style lang="stylus">
 @import "assets/colors.styl"
+@import "assets/utils.styl"
 
-@font-face
-  font-family: Aventador
-  src: url('/fonts/Aventadorscript.woff2') format('woff2'),
-    url('/fonts/Aventadorscript.woff') format('woff'),
-    url('/fonts/Aventadorscript.ttf') format('truetype')
-  font-weight: normal
-  font-style: normal
-  font-display: swap
-
+@font-face {
+  font-family: 'Alumni Sans Pinstripe';
+  src: url('/fonts/AlumniSansPinstripe-Regular.woff2') format('woff2'),
+    url('/fonts/AlumniSansPinstripe-Regular.woff') format('woff'),
+    url('/fonts/AlumniSansPinstripe-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 html
-  font-size 16px
+  font-size 20px
+  font-weight bolder
 
 *
   margin 0
   padding 0
-  font-family Tahoma, Geneva, sans-serif
+  font-family "Alumni Sans Pinstripe", Tahoma, Geneva, sans-serif
 
 body
   overflow hidden
-  background linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 1)), url("/pages/365_dney_seksa-370.jpg") center
+  background transparent-background(), url("/pages/365_dney_seksa-370.jpg") center
   background-color $color-primary-1
   background-size fill
   background-repeat no-repeat
@@ -47,6 +49,9 @@ body
   height 100%
 
   & > .page
+    display flex
+    justify-content center
+    align-items center
     width 100%
     height 100%
 
@@ -103,4 +108,5 @@ button, .button
 
     &.router-link-active
       display none
+
 </style>

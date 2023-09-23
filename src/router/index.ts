@@ -1,20 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import GameView from "@/views/GameView.vue"
+import Main from '@/views/Main.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'main',
+      component: Main,
     },
     {
-      path: '/game/:level',
-      name: 'game',
-      component: GameView
-    }
+      path: '/kamarafon',
+      name: 'kamarafon-main',
+      component: () => import('@/views/kamarafon/KamarafonMain.vue'),
+    },
+    {
+      path: '/kamarafon/:level',
+      name: 'kamarafon-game',
+      component: () => import('@/views/kamarafon/KamarafonGame.vue'),
+    },
   ]
 })
 
