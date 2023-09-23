@@ -25,7 +25,7 @@ onBeforeUnmount(() => document.removeEventListener('keypress', keyPressHandler))
   <main @click="clickListener">
     <img :src="image" alt="" class="pose"/>
     <div class="hud">
-      #{{ level + 1 }}
+      # {{ level + 1 }}
     </div>
   </main>
 </template>
@@ -42,11 +42,11 @@ main
     max-width 100%
 
 .hud
-  color $color-secondary-b-0
-  font-size 2em
+  color $color-primary-3
+  font-size 1.4em
   position fixed
   top 0
   left 0
-  padding 1.2em
+  padding .5em .8em
 
 </style>

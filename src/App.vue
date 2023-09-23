@@ -3,9 +3,9 @@ import {RouterView} from 'vue-router'
 </script>
 
 <template>
-<!--  <div class="menu">-->
-<!--    <router-link to="/" class="button">↩</router-link>-->
-<!--  </div>-->
+  <div class="menu">
+    <router-link to="/" class="button">↩</router-link>
+  </div>
   <router-view v-slot="{Component, route}" class="page">
     <transition>
       <component :is="Component" :key="route.fullPath"></component>
@@ -57,14 +57,14 @@ body
 
 button, .button
   font-weight normal
-  border .05em solid $color-secondary-b-0
-  color $color-secondary-b-3
+  color $color-primary-3
   padding 1em 2em
   font-size 1.2em
   cursor pointer
   text-transform uppercase
   text-decoration none
   transition all ease .3s
+  background transparent-background()
 
   &:hover
     box-shadow 0 0 .5em $color-primary-4
@@ -104,7 +104,7 @@ button, .button
     align-items center
     padding 0
     border-radius 50%
-    background none
+    opacity .5
 
     &.router-link-active
       display none
