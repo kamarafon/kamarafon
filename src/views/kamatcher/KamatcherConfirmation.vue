@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type {Card} from '@/views/kamatcher/models'
 import {defineProps, defineEmits, onMounted, onUnmounted} from 'vue'
+import {numberToPath} from '@/common/cards'
 
 const {card} = defineProps<{
-  card: Card
+  card: number
 }>()
 
 const emit = defineEmits<{
-  (e: 'confirmed', card: Card): void,
+  (e: 'confirmed', card: number): void,
   (e: 'reject'): void
 }>()
 
@@ -29,7 +29,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeys))
 
 <template>
   <div class="confirm-card">
-    <img alt="card" :src="card.path"/>
+    <img alt="card" :src="numberToPath(card)"/>
     <div class="confirmation">
       <button @click="emit('confirmed', card)">выбрать</button>
       <button @click="emit('reject')">отмена</button>

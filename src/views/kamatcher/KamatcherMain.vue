@@ -8,7 +8,7 @@ const cardsNumber = [2, 3, 4]
 const selectCard = (n: number) => {
   store.prepareGame()
   router.push({
-    name: 'kamatcher-game', params: {cards: n, level: 0}
+    name: 'kamatcher-choice', params: {cards: n, level: 0}
   })
 }
 </script>

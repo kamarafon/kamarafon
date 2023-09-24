@@ -23,13 +23,32 @@ const router = createRouter({
 
     {
       path: '/kamatcher',
-      name: 'kamatcher-main',
-      component: () => import('@/views/kamatcher/KamatcherMain.vue'),
-    },
-    {
-      path: '/kamatcher/:cards/:level',
-      name: 'kamatcher-game',
-      component: () => import('@/views/kamatcher/KamatcherGame.vue'),
+      name: 'kamatcher',
+      component: () => import('@/views/RouterContainer.vue'),
+      children: [
+        {
+          path: '',
+          name: 'kamatcher-main',
+          component: () => import('@/views/kamatcher/KamatcherMain.vue'),
+        },
+        {
+          path: ':cards/:level',
+          name: 'kamatcher-game',
+          component: () => import('@/views/RouterContainer.vue'),
+          children: [
+            {
+              path: 'choice/:choice?',
+              name: 'kamatcher-choice',
+              component: () => import('@/views/kamatcher/KamatcherPlayerChoice.vue'),
+            },
+            {
+              path: 'results/:woman/:man',
+              name: 'kamatcher-results',
+              component: () => import('@/views/kamatcher/KamatcherResults.vue'),
+            }
+          ]
+        },
+      ]
     },
   ]
 })

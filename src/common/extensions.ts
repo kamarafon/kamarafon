@@ -1,0 +1,1 @@
+export const enumSize = (obj: Object) => Object.keys(obj).length / 2
