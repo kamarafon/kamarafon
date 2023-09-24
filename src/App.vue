@@ -56,6 +56,7 @@ body
     height 100%
 
 button, .button
+  border none
   font-weight normal
   color $color-primary-3
   padding 1em 2em
@@ -65,18 +66,19 @@ button, .button
   text-decoration none
   transition all ease .3s
   background transparent-background()
+  border-radius .3em
 
   &:hover
     box-shadow 0 0 .5em $color-primary-4
 
 .v-enter-active
   position absolute
-  transition all 1.5s ease
+  transition all 1s ease
   transform scale(1)
 
 .v-leave-active
   position absolute
-  transition all 1.5s ease
+  transition all 1s ease
   transform scale(1)
 
 .v-enter-from

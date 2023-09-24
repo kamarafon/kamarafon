@@ -6,7 +6,7 @@ import {useKamarafonStore} from '@/stores/kamarafon'
 
 const store = useKamarafonStore()
 
-const prepareGame = () => store.createCards()
+const prepareGame = () => store.prepareGame()
 
 </script>
 

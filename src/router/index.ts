@@ -9,6 +9,7 @@ const router = createRouter({
       name: 'main',
       component: Main,
     },
+
     {
       path: '/kamarafon',
       name: 'kamarafon-main',
@@ -18,6 +19,17 @@ const router = createRouter({
       path: '/kamarafon/:level',
       name: 'kamarafon-game',
       component: () => import('@/views/kamarafon/KamarafonGame.vue'),
+    },
+
+    {
+      path: '/kamatcher',
+      name: 'kamatcher-main',
+      component: () => import('@/views/kamatcher/KamatcherMain.vue'),
+    },
+    {
+      path: '/kamatcher/:cards/:level',
+      name: 'kamatcher-game',
+      component: () => import('@/views/kamatcher/KamatcherGame.vue'),
     },
   ]
 })

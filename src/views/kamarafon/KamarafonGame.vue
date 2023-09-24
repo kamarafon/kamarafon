@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted} from 'vue'
 import router from '@/router'
-import * as _ from 'lodash'
 import {useKamarafonStore} from '@/stores/kamarafon'
-import {numberToPath} from '@/cards/utils'
+import {numberToPath} from '@/common/cards'
 
 const store = useKamarafonStore()
 const level = +router.currentRoute.value.params.level

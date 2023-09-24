@@ -10,7 +10,7 @@ const games = [
   {
     title: 'kamatcher',
     subtitle: 'совпадение, не думаю',
-    path: '/',
+    path: router.resolve({name: 'kamatcher-main'})
   },
   {
     title: 'just dance',
