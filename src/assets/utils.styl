@@ -1,2 +1,8 @@
 transparent-background()
   linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, .5))
+
+gender-highlight(color, size = 0 0 3em, type = inset)
+  if type == inset
+    box-shadow type size color
+  else
+    box-shadow size color

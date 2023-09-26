@@ -1,0 +1,80 @@
+<script setup lang="ts">
+import {numberToPath} from '@/common/cards'
+import {ref} from 'vue'
+import {Gender} from '@/common/gender'
+import type {ShowCard} from '@/views/kamatcher/models'
+
+const props = defineProps<{
+  page: ShowCard[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'select', card: number)
+}>()
+
+const page = ref(props.page)
+</script>
+
+<template>
+  <div class="cards">
+    <div v-for="card in page" class="card">
+      <a href="#" @click.prevent="emit('select', card.card)">
+        <img alt="card"
+             :src="numberToPath(card.card)"
+             :class="'highlight-gender-' + (Gender[card.gender] || 'combined')"/>
+        <transition>
+          <div class="task" v-if="card.showTask">
+            <div>
+              <slot name="card-task" :card="card"></slot>
+            </div>
+          </div>
+        </transition>
+      </a>
+    </div>
+  </div>
+</template>
+
+<style lang="stylus" scoped>
+@import "../../assets/colors.styl"
+@import "../../assets/utils.styl"
+
+highlight(color)
+  gender-highlight(color, 0 0 1em, "")
+
+.cards
+  display flex
+  width 100%
+  height 100%
+  align-items center
+  justify-content center
+
+  .card
+    position relative
+    display flex
+    margin .5em
+
+    img
+      display block
+      max-width 100%
+      max-height 90vh
+
+      &.highlight-gender-Man
+        highlight($color-he)
+
+      &.highlight-gender-Woman
+        highlight($color-she)
+
+      &.highlight-gender-combined
+        highlight(gold)
+
+    .task
+      display flex
+      top 0
+      bottom 0
+      left 0
+      right 0
+      position absolute
+      align-items center
+      justify-content center
+      background transparent-background()
+</style>

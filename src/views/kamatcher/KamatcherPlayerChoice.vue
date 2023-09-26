@@ -1,49 +1,39 @@
 <script lang="ts" setup>
 import router from '@/router'
 import {useKamatcherStore} from '@/stores/kamatcher'
-import * as _ from 'lodash'
-import {numberToPath} from '@/common/cards'
+import {cardsPage} from '@/common/cards'
 import KamatcherConfirmation from '@/views/kamatcher/KamatcherConfirmation.vue'
-import type {Card} from '@/views/kamatcher/models'
-import {Gender, GenderNames} from '@/common/gender'
+import {Gender} from '@/common/gender'
 import {ref} from 'vue'
-import {enumSize} from '@/common/extensions'
+import {parseIntParams} from '@/common/extensions'
+import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
+import * as _ from 'lodash'
 
-const {cards, level, choice} = _.chain(router.currentRoute.value.params)
-  .pick(['cards', 'level', 'choice'])
-  .mapValues(v => +v)
-  .value()
-
+const currentRoute = router.currentRoute.value
+const {cards, level, choice} = parseIntParams(currentRoute.params, ['cards', 'level', 'choice'])
 const currentPlayer = choice && Gender.Man || Gender.Woman
 const store = useKamatcherStore()
 const selectedCard = ref(null as number | null)
-const cardsChunk: Card[] = _.chain(store.cardIds)
-  .chunk(cards)
-  .get(level)
-  .value()
+const cardsPageIds = cardsPage(store.cardIds, cards, level)
+const page = cardsPageIds.map(card => ({card, gender: currentPlayer}))
 
-router.beforeEach((to, form, next) => {
-  next()
-})
-
+const cardWithTask = () => _.chain(cardsPageIds).shuffle().first().value()
 const select = (id: number) => {
   if (!choice) return router.push(
-    {name: 'kamatcher-choice', params: {cards, level, choice: id}}
+    {name: 'kamatcher-choice', params: {cards, level, choice: id}, query: currentRoute.query}
   )
 
-  router.push({name: 'kamatcher-results', params: {cards, level, woman: choice, man: id}})
+  router.push({
+    name: 'kamatcher-results',
+    params: {cards, level, woman: choice, man: id},
+    query: {...currentRoute.query, c: cardWithTask()}
+  })
 }
 </script>
 
 <template>
-  <main class="kamatcher" :class="'kamatcher-player-' + GenderNames[currentPlayer]" >
-    <div class="cards">
-      <div v-for="card in cardsChunk" class="card">
-        <a href="#" @click.prevent="selectedCard = card">
-          <img alt="card" :src="numberToPath(card)"/>
-        </a>
-      </div>
-    </div>
+  <main class="kamatcher" :class="'kamatcher-player-' + Gender[currentPlayer]" >
+    <kamatcher-show-cards :page="page" @select="selectedCard = $event"></kamatcher-show-cards>
     <transition>
       <kamatcher-confirmation v-if="selectedCard"
                               @confirmed="select($event)"
@@ -55,24 +45,12 @@ const select = (id: number) => {
 
 <style lang="stylus" scoped>
 @import "../../assets/colors.styl"
-
-gender-highlight(color)
-  box-shadow inset 0 0 3em color
+@import "../../assets/utils.styl"
 
 .kamatcher
-  &.kamatcher-player-woman
+  &.kamatcher-player-Woman
     gender-highlight($color-she)
 
-  &.kamatcher-player-man
+  &.kamatcher-player-Man
     gender-highlight($color-he)
-
-.cards
-  display flex
-  width 100%
-
-  .card
-    margin .5em
-
-    img
-      max-width 100%
 </style>

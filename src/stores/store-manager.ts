@@ -13,7 +13,11 @@ export function createStoreManager(name: string): StoreManager {
     },
     load<S>(defaultData: S): S {
       const data = localStorage.getItem(name)
-      if (data) return JSON.parse(data)
+      if (data) try {
+        return JSON.parse(data)
+      } catch (e) {
+        console.log('Error with data parsing', data)
+      }
       return defaultData
     },
   }
@@ -33,11 +37,11 @@ export function createStoreWithCardIds(storeManager: StoreManager) {
     actions: {
       prepareGame() {
         const self = this as any
-        self.cardIds = // randomizeCardNumbers(
-          createCartNumbers()
-        // )
+        self.cardIds = prepareCards()
         storeManager.persist(self.$state)
       },
     },
   }
 }
+
+export const prepareCards = () => randomizeCardNumbers(createCartNumbers())

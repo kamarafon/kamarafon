@@ -56,7 +56,7 @@ body
     height 100%
 
 button, .button
-  border none
+  border .1em solid $color-primary-0
   font-weight normal
   color $color-primary-3
   padding 1em 2em
@@ -69,7 +69,7 @@ button, .button
   border-radius .3em
 
   &:hover
-    box-shadow 0 0 .5em $color-primary-4
+    box-shadow 0 0 .5em $color-primary-0
 
 .v-enter-active
   position absolute

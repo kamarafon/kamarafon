@@ -2,13 +2,17 @@
 import WelcomeGame from '@/components/WelcomeGame.vue'
 import router from '@/router'
 import {useKamatcherStore} from '@/stores/kamatcher'
+import {Gender} from '@/common/gender'
+import {genderClothesCount} from '@/common/clothes'
 
 const store = useKamatcherStore()
 const cardsNumber = [2, 3, 4]
 const selectCard = (n: number) => {
   store.prepareGame()
   router.push({
-    name: 'kamatcher-choice', params: {cards: n, level: 0}
+    name: 'kamatcher-choice',
+    params: {cards: n, level: 0},
+    query: {w: genderClothesCount(Gender.Woman), m: genderClothesCount(Gender.Man)}
   })
 }
 </script>
