@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Main from '@/views/Main.vue'
+import KamarafonMain from '@/views/kamarafon/KamarafonMain.vue'
+import KamarafonGame from '@/views/kamarafon/KamarafonGame.vue'
+import RouterContainer from '@/views/RouterContainer.vue'
+import KamatcherMain from '@/views/kamatcher/KamatcherMain.vue'
+import KamatcherPlayerChoice from '@/views/kamatcher/KamatcherPlayerChoice.vue'
+import KamatcherResults from '@/views/kamatcher/KamatcherResults.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,38 +19,38 @@ const router = createRouter({
     {
       path: '/kamarafon',
       name: 'kamarafon-main',
-      component: () => import('@/views/kamarafon/KamarafonMain.vue'),
+      component: KamarafonMain,
     },
     {
       path: '/kamarafon/:level',
       name: 'kamarafon-game',
-      component: () => import('@/views/kamarafon/KamarafonGame.vue'),
+      component: KamarafonGame,
     },
 
     {
       path: '/kamatcher',
       name: 'kamatcher',
-      component: () => import('@/views/RouterContainer.vue'),
+      component: RouterContainer,
       children: [
         {
           path: '',
           name: 'kamatcher-main',
-          component: () => import('@/views/kamatcher/KamatcherMain.vue'),
+          component: KamatcherMain,
         },
         {
           path: ':cards/:level',
           name: 'kamatcher-game',
-          component: () => import('@/views/RouterContainer.vue'),
+          component: RouterContainer,
           children: [
             {
               path: 'choice/:choice?',
               name: 'kamatcher-choice',
-              component: () => import('@/views/kamatcher/KamatcherPlayerChoice.vue'),
+              component: KamatcherPlayerChoice,
             },
             {
               path: 'results/:woman/:man',
               name: 'kamatcher-results',
-              component: () => import('@/views/kamatcher/KamatcherResults.vue'),
+              component: KamatcherResults,
             }
           ]
         },
