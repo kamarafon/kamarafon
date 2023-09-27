@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
+
+const fullScreen = (element: HTMLElement): boolean => {
+  element.requestFullscreen && element.requestFullscreen()
+  return true
+}
 </script>
 
 <template>
@@ -31,6 +36,10 @@ html
   font-size 20px
   font-weight bolder
 
+@media screen and (max-width: 600px)
+  html
+    font-size 12px
+
 *
   margin 0
   padding 0
@@ -42,7 +51,7 @@ body
   background-color $color-primary-1
   background-size fill
   background-repeat no-repeat
-  height 100vh
+  height 100dvh
   color $color-primary-0
 
 #app
