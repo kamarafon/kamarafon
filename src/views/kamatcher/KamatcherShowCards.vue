@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'select', card: number)
+  (e: 'select', card: number): void
 }>()
 
 const page = ref(props.page)
@@ -21,7 +21,7 @@ const page = ref(props.page)
       <a href="#" @click.prevent="emit('select', card.card)">
         <img alt="card"
              :src="numberToPath(card.card)"
-             :class="'highlight-gender-' + (Gender[card.gender] || 'combined')"/>
+             :class="'highlight-gender-' + (Gender[card.gender!] || 'combined')"/>
         <transition>
           <div class="task" v-if="card.showTask">
             <div>

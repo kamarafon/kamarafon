@@ -8,14 +8,15 @@ import {ref} from 'vue'
 import {parseIntParams} from '@/common/extensions'
 import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
 import * as _ from 'lodash'
+import type {ShowCard} from '@/views/kamatcher/models'
 
 const currentRoute = router.currentRoute.value
 const {cards, level, choice} = parseIntParams(currentRoute.params, ['cards', 'level', 'choice'])
-const currentPlayer = choice && Gender.Man || Gender.Woman
+const currentPlayer: Gender = choice && Gender.Man || Gender.Woman
 const store = useKamatcherStore()
 const selectedCard = ref(null as number | null)
 const cardsPageIds = cardsPage(store.cardIds, cards, level)
-const page = cardsPageIds.map(card => ({card, gender: currentPlayer}))
+const page: ShowCard[] = cardsPageIds.map(card => ({card, gender: currentPlayer}))
 
 const cardWithTask = () => _.chain(cardsPageIds).shuffle().first().value()
 const select = (id: number) => {

@@ -1,6 +1,15 @@
+import {Gender} from '@/common/gender'
+
 export interface ShowCard {
   card: number
-  gender?: string
+  gender?: number
   showTask?: boolean
-  task: any
+  task?: any
+}
+
+export type ClothesByGender = { [key in Gender]: number }
+
+export interface Task {
+  title: string
+  description: string[]
 }

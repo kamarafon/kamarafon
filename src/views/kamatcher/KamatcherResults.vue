@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import router from '@/router'
 import {parseIntParams} from '@/common/extensions'
-import {useKamatcherStore} from '@/stores/kamatcher'
 import {Gender} from '@/common/gender'
 import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
 import {ref} from 'vue'
+import {createCombinedTask, createSingleTask} from '@/views/kamatcher/tasks-generator'
+import type {ClothesByGender, ShowCard, Task} from '@/views/kamatcher/models'
 import * as _ from 'lodash'
-import {ClothesByGender, createCombinedTask, createSingleTask, Task} from '@/views/kamatcher/tasks-generator'
 
 const currentRoute = router.currentRoute.value
 const {cards, level, woman, man} = parseIntParams(
@@ -14,7 +14,7 @@ const {cards, level, woman, man} = parseIntParams(
   ['cards', 'level', 'woman', 'man']
 )
 let {w: womanClothes, m: manClothes, c: taskCard} = parseIntParams(currentRoute.query, ['w', 'm', 'c'])
-const clothesTask: ClothesByGender = {}
+const clothesTask: ClothesByGender = {} as ClothesByGender
 if (woman === taskCard) clothesTask[Gender.Woman] = --womanClothes
 if (man === taskCard) clothesTask[Gender.Man] = --manClothes
 const someHasClothes = womanClothes > 0 || manClothes > 0
@@ -24,18 +24,17 @@ const createTask = (clothes: ClothesByGender, gender: Gender, hasClothes: boolea
   return createSingleTask(clothesTask, gender)
 }
 
+const choiceResults = [[Gender.Woman, woman], [Gender.Man, man]].filter(_.constant(woman !== man))
+console.log(choiceResults)
+
 const pages = ref(
-  [[Gender.Woman, woman], [Gender.Man, man]]
-    .reduce((w, m) => {
-      if (man === woman) return [[-1, woman]]
-      return [w, m]
-    })
+  (choiceResults.length ? choiceResults : [[-1 as Gender, woman]])
     .map(([gender, card]) => ({
       card,
       gender,
       showTask: false,
       task: createTask(clothesTask, gender, someHasClothes),
-    }))
+    } as ShowCard))
 )
 
 const toggleShowTask = () => pages.value.forEach(p => p.showTask = !p.showTask)
@@ -53,9 +52,10 @@ const toggleShowTask = () => pages.value.forEach(p => p.showTask = !p.showTask)
             {{ desc }}
           </div>
           <div class="next-button">
-            <router-link :to="{name: 'kamatcher-choice', params: {level: level + 1, cards}, query: {w: womanClothes, m: manClothes}}"
-                         v-if="someHasClothes"
-                         class="button">
+            <router-link
+              :to="{name: 'kamatcher-choice', params: {level: level + 1, cards}, query: {w: womanClothes, m: manClothes}}"
+              v-if="someHasClothes"
+              class="button">
               продолжить
             </router-link>
             <router-link :to="{name: 'kamatcher-main'}"
@@ -75,6 +75,7 @@ const toggleShowTask = () => pages.value.forEach(p => p.showTask = !p.showTask)
 
 .task-description
   text-align center
+
   .title
     font-size 1.6em
     color $color-primary-3

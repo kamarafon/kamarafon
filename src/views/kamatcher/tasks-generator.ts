@@ -2,11 +2,7 @@ import {Gender} from '@/common/gender'
 import type {KamatcherClothes} from '@/common/clothes'
 import * as _ from 'lodash'
 import {KamatcherClothesByGender} from '@/common/clothes'
-
-export interface Task {
-  title: string
-  description: string[]
-}
+import type {ClothesByGender, Task} from '@/views/kamatcher/models'
 
 const forWho = {
   [Gender.Woman]: {
@@ -19,7 +15,6 @@ const forWho = {
   },
 }
 
-export type ClothesByGender = { [key in Gender]: number[] }
 
 const clothesToUndressDescription = (clothes: KamatcherClothes, gender: Gender): string => {
   const parts = KamatcherClothesByGender[gender][clothes]
@@ -27,14 +22,13 @@ const clothesToUndressDescription = (clothes: KamatcherClothes, gender: Gender):
 }
 
 export const createCombinedTask = (clothes: ClothesByGender, hasClothes: boolean): Task => {
-  const clothesToRemove = _.chain(clothes)
+  const clothesToRemove: string[] = _.chain(clothes)
     .toPairs()
     .filter(([__, v]) => v > -1)
     .fromPairs()
-    .map(clothesToUndressDescription)
+    .map((c, g) => clothesToUndressDescription(c, +g))
     .value()
 
-  // todo error
   const basicTask = hasClothes
     ? 'Повторите то, что вам обоим понравилось, только в оставшейся на вас одежде'
     : 'Займитесь "этим", в выбранной позе, ведь на вас уже нет одежды'
@@ -42,12 +36,12 @@ export const createCombinedTask = (clothes: ClothesByGender, hasClothes: boolean
   return {
     title: 'Задание для двоих',
     description: [
-      ...clothesToRemove,
+      ... clothesToRemove,
       basicTask
     ]
   }
 }
-export const createSingleTask = (clothes?: ClothesByGender, gender: Gender): Task => {
+export const createSingleTask = (clothes: ClothesByGender, gender: Gender): Task => {
   const description = clothes[gender] > -1 && [clothesToUndressDescription(clothes[gender], gender)]
   return {
     title: 'Задание для ' + forWho[gender].who,
