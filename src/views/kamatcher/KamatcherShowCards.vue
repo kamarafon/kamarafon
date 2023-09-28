@@ -62,6 +62,7 @@ highlight(color)
       height 100%
       display flex
       align-items center
+      position relative
 
       img
         display inline-block
@@ -83,12 +84,12 @@ highlight(color)
       bottom 0
       left 0
       right 0
-      position absolute
       align-items center
+      position absolute
       justify-content center
       background transparent-background()
 
-@media screen and (max-width: modile-size)
+@media (orientation: portrait)
   .cards
     flex-direction column
     height calc(100% / var(--cards-count))
