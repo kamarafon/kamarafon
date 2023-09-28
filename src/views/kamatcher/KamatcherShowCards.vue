@@ -16,7 +16,7 @@ const page = ref(props.page)
 </script>
 
 <template>
-  <div class="cards">
+  <div class="cards" :style="{'--cards-count': page.length}">
     <div v-for="card in page" class="card">
       <a href="#" @click.prevent="emit('select', card.card)">
         <img alt="card"
@@ -37,6 +37,7 @@ const page = ref(props.page)
 <style lang="stylus" scoped>
 @import "../../assets/colors.styl"
 @import "../../assets/utils.styl"
+@import "../../assets/metrics.styl"
 
 highlight(color)
   gender-highlight(color, 0 0 1em, "")
@@ -86,4 +87,9 @@ highlight(color)
       align-items center
       justify-content center
       background transparent-background()
+
+@media screen and (max-width: modile-size)
+  .cards
+    flex-direction column
+    height calc(100% / var(--cards-count))
 </style>

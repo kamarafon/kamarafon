@@ -21,6 +21,7 @@ const fullScreen = (element: HTMLElement): boolean => {
 <style lang="stylus">
 @import "assets/colors.styl"
 @import "assets/utils.styl"
+@import "assets/metrics.styl"
 
 @font-face {
   font-family: 'Alumni Sans Pinstripe';
@@ -36,7 +37,7 @@ html
   font-size 20px
   font-weight bolder
 
-@media screen and (max-width: 600px)
+@media screen and (max-width: modile-size)
   html
     font-size 12px
 

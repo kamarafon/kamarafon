@@ -25,7 +25,6 @@ const createTask = (clothes: ClothesByGender, gender: Gender, hasClothes: boolea
 }
 
 const choiceResults = [[Gender.Woman, woman], [Gender.Man, man]].filter(_.constant(woman !== man))
-console.log(choiceResults)
 
 const pages = ref(
   (choiceResults.length ? choiceResults : [[-1 as Gender, woman]])
