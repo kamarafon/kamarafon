@@ -17,10 +17,8 @@
 .welcome-game
   width 100%
   height 100%
-  margin 1em
   display flex
   flex-direction column
-  padding 1em
   justify-content center
   align-items center
 
@@ -35,7 +33,6 @@
   .description
     background transparent-background()
     color $color-primary-3
-    padding 1em 2em
     max-width 960px
     width 100%
 

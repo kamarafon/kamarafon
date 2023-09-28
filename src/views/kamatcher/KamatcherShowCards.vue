@@ -52,20 +52,29 @@ highlight(color)
     position relative
     display flex
     margin .5em
+    flex-grow 1
+    height 100%
+    justify-content center
+    align-items center
 
-    img
-      display block
-      max-width 100%
-      max-height 90vh
+    a
+      height 100%
+      display flex
+      align-items center
 
-      &.highlight-gender-Man
-        highlight($color-he)
+      img
+        display inline-block
+        max-width 100%
+        max-height 100%
 
-      &.highlight-gender-Woman
-        highlight($color-she)
+        &.highlight-gender-Man
+          highlight($color-he)
 
-      &.highlight-gender-combined
-        highlight(gold)
+        &.highlight-gender-Woman
+          highlight($color-she)
+
+        &.highlight-gender-combined
+          highlight(gold)
 
     .task
       display flex

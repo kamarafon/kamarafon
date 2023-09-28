@@ -8,14 +8,14 @@ const fullScreen = (element: HTMLElement): boolean => {
 </script>
 
 <template>
-  <div class="menu">
-    <router-link to="/" class="button">↩</router-link>
-  </div>
   <router-view v-slot="{Component, route}" class="page">
     <transition>
       <component :is="Component" :key="route.fullPath"></component>
     </transition>
   </router-View>
+  <div class="menu">
+    <router-link to="/" class="button">↩</router-link>
+  </div>
 </template>
 
 <style lang="stylus">
@@ -46,7 +46,7 @@ html
   font-family "Alumni Sans Pinstripe", Tahoma, Geneva, sans-serif
 
 body
-  overflow hidden
+  scrollbar-gutter stable
   background transparent-background(), url("/pages/365_dney_seksa-370.jpg") center
   background-color $color-primary-1
   background-size fill
@@ -81,7 +81,6 @@ button, .button
     box-shadow 0 0 .5em $color-primary-0
 
 .v-enter-active
-  position absolute
   transition all 1s ease
   transform scale(1)
 
@@ -92,11 +91,11 @@ button, .button
 
 .v-enter-from
   opacity 0
-  transform scale(.1)
+  transform scale(.6)
 
 .v-leave-to
   opacity 0
-  transform scale(.1)
+  transform scale(.6)
 
 .menu
   size = 2em
@@ -119,5 +118,4 @@ button, .button
 
     &.router-link-active
       display none
-
 </style>
