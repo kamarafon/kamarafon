@@ -21,41 +21,17 @@ const games = [
 </script>
 
 <template>
-  <main>
-    <ul class="game-selector">
-      <li v-for="game in games">
-        <router-link :to="game.path">
-          {{ game.title }}
-          <span class="sub-title">{{ game.subtitle }}</span>
-        </router-link>
-      </li>
-    </ul>
+  <main class="uk-flex uk-flex-middle uk-flex-center">
+    <div class="uk-card uk-card-secondary uk-card-body uk-width-1-2@m uk-width-1-1@s">
+      <dl v-for="game in games">
+        <dt><router-link :to="game.path" class="uk-text-large game-title">{{ game.title }}</router-link></dt>
+        <dd class="uk-text-meta">{{ game.subtitle }}</dd>
+      </dl>
+    </div>
   </main>
 </template>
 
 <style lang="stylus">
 @import '../assets/colors.styl'
 @import "../assets/utils.styl"
-
-.game-selector
-  background transparent-background()
-  padding 1em
-  font-size 1.5em
-  text-transform uppercase
-  list-style none
-  min-width 50%
-
-  li
-    margin 1em 0
-    text-align center
-
-    a
-      text-decoration none
-      color $color-primary-4
-
-      .sub-title
-        display block
-        font-size .5em
-        color $color-secondary-b-0
-        text-transform lowercase
 </style>
