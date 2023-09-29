@@ -13,9 +13,9 @@ const games = [
     path: router.resolve({name: 'kamatcher-main'})
   },
   {
-    title: 'just dance',
-    subtitle: 'сделаем это быстро',
-    path: '/',
+    title: 'kamategories',
+    subtitle: 'всё по полочкам',
+    path: '/kamategories',
   }
 ]
 </script>

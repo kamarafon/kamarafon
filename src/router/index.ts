@@ -7,6 +7,7 @@ import RouterContainer from '@/views/RouterContainer.vue'
 import KamatcherMain from '@/views/kamatcher/KamatcherMain.vue'
 import KamatcherPlayerChoice from '@/views/kamatcher/KamatcherPlayerChoice.vue'
 import KamatcherResults from '@/views/kamatcher/KamatcherResults.vue'
+import KamategoriesMain from '@/views/kamategories/KamategoriesMain.vue'
 
 const pageTitleUpdate = (route: RouteLocationNormalized) => {
   const pageTitle = route.meta.title
@@ -74,6 +75,15 @@ const router = createRouter({
         },
       ]
     },
+    {
+      path: '/kamategories',
+      name: 'kamategories-main',
+      component: KamategoriesMain,
+      meta: {
+        title: 'Kamategories'
+      },
+      beforeEnter: pageTitleUpdate,
+    }
   ],
 })
 
