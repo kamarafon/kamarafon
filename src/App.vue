@@ -8,7 +8,7 @@ const fullScreen = (element: HTMLElement): boolean => {
 </script>
 
 <template>
-  <div class="uk-container uk-height-1-1">
+  <div class="uk-container uk-height-1-1 uk-overflow-hidden">
     <router-view v-slot="{Component, route}" class="page">
       <transition>
         <component :is="Component" :key="route.fullPath"></component>
@@ -18,13 +18,14 @@ const fullScreen = (element: HTMLElement): boolean => {
 </template>
 
 <style src="uikit/dist/css/uikit.min.css"></style>
+<style src="../node_modules/animate.css"></style>
 
 <style lang="stylus">
 @import "assets/colors.styl"
 @import "assets/utils.styl"
 @import "assets/metrics.styl"
 
-@font-face {
+@font-face
   font-family: 'Alumni Sans Pinstripe';
   src: url('/fonts/AlumniSansPinstripe-Regular.woff2') format('woff2'),
     url('/fonts/AlumniSansPinstripe-Regular.woff') format('woff'),
@@ -32,7 +33,25 @@ const fullScreen = (element: HTMLElement): boolean => {
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
+
+.animated
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+
+//.animate__animated.animate__bounceInLeft
+//  --animate-duration: 1s
+//  --animate-delay: 1s
+//
+//.animate__animated.animate__bounceOutRight
+//  --animate-duration: 1s
+
+//:root {
+//  --animate-duration: 800ms;
+//  --animate-delay: 0.9s;
+//}
 
 body
   scrollbar-gutter stable
@@ -41,10 +60,9 @@ body
   background-size fill
   background-repeat no-repeat
   height 100dvh
-  color $color-primary-0
 
 #app
-  height 100dvh
+  height 100%
 
   & .uk-container > .page
     height 100%
@@ -63,19 +81,16 @@ body
   background transparent-background()
 
 .v-enter-active
-  transition all 1s ease
-  transform scale(1)
+  transition all .3s ease
+  transition-delay .3s
+  opacity 0
+.v-enter-to
+  opacity 1
 
 .v-leave-active
-  position absolute
-  transition all 1s ease
-  transform scale(1)
-
-.v-enter-from
-  opacity 0
-  transform scale(.6)
-
+  opacity 1
+  transition all .3s ease
 .v-leave-to
   opacity 0
-  transform scale(.6)
+
 </style>

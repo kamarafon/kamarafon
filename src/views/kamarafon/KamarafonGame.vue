@@ -21,9 +21,9 @@ onBeforeUnmount(() => document.removeEventListener('keypress', keyPressHandler))
 </script>
 
 <template>
-  <main @click="clickListener">
+  <main @click="clickListener" class="uk-flex uk-height-1-1 uk-flex-center uk-flex-middle">
     <img :src="image" alt="" class="pose"/>
-    <div class="hud">
+    <div class="uk-label uk-label-danger uk-position-absolute uk-position-top-left uk-margin-left uk-margin-top uk-text-bold">
       # {{ level + 1 }}
     </div>
   </main>
@@ -32,20 +32,7 @@ onBeforeUnmount(() => document.removeEventListener('keypress', keyPressHandler))
 <style lang="stylus" scoped>
 @import "../../assets/colors.styl"
 
-main
-  display flex
-  height 100%
-
-  .pose
-    max-height 100%
-    max-width 100%
-
-.hud
-  color $color-primary-3
-  font-size 1.4em
-  position fixed
-  top 0
-  left 0
-  padding .5em .8em
+.pose
+  max-height 100%
 
 </style>
