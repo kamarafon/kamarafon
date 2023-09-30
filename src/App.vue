@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
 
-const fullScreen = (element: HTMLElement): boolean => {
-  element.requestFullscreen && element.requestFullscreen()
-  return true
-}
 </script>
 
 <template>
-  <div class="uk-container uk-height-1-1 uk-overflow-hidden">
+  <div class="uk-container uk-container-expand uk-height-1-1 uk-overflow-hidden">
     <router-view v-slot="{Component, route}" class="page">
       <transition>
         <component :is="Component" :key="route.fullPath"></component>
       </transition>
     </router-View>
+    <div class="uk-position-absolute uk-position-bottom-right uk-margin-right uk-margin-bottom">
+      <router-link :to="{name: 'main'}">
+        <span uk-icon="home"></span>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <style src="uikit/dist/css/uikit.min.css"></style>
-<style src="../node_modules/animate.css"></style>
 
 <style lang="stylus">
 @import "assets/colors.styl"
@@ -33,25 +33,6 @@ const fullScreen = (element: HTMLElement): boolean => {
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-
-.animated
-  position absolute
-  top 0
-  bottom 0
-  left 0
-  right 0
-
-//.animate__animated.animate__bounceInLeft
-//  --animate-duration: 1s
-//  --animate-delay: 1s
-//
-//.animate__animated.animate__bounceOutRight
-//  --animate-duration: 1s
-
-//:root {
-//  --animate-duration: 800ms;
-//  --animate-delay: 0.9s;
-//}
 
 body
   scrollbar-gutter stable
@@ -92,5 +73,8 @@ body
   transition all .3s ease
 .v-leave-to
   opacity 0
+
+.router-link-active
+  display none
 
 </style>

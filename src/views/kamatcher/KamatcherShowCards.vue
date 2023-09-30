@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {numberToPath} from '@/common/cards'
 import {ref} from 'vue'
-import {Gender} from '@/common/gender'
 import type {ShowCard} from '@/views/kamatcher/models'
 
 const props = defineProps<{
@@ -16,22 +15,28 @@ const page = ref(props.page)
 </script>
 
 <template>
-  <div class="cards" :style="{'--cards-count': page.length}">
-    <div v-for="card in page" class="card">
-      <a href="#" @click.prevent="emit('select', card.card)">
-        <img alt="card"
-             :src="numberToPath(card.card)"
-             :class="'highlight-gender-' + (Gender[card.gender!] || 'combined')"/>
-        <transition>
-          <div class="task" v-if="card.showTask">
-            <div>
-              <slot name="card-task" :card="card"></slot>
+  <main class="uk-flex uk-flex-column uk-height-1-1">
+    <div class="uk-position-relative uk-visible-toggle uk-light uk-height-1-1" tabindex="-1" uk-slider>
+      <ul
+        class="uk-slider-items uk-child-width-1-1 uk-child-width-1-3@s uk-child-width-1-4@m uk-height-1-1 uk-flex uk-flex-center">
+        <li v-for="card in page"
+            class="uk-width-1-4@l uk-width-1-3@m uk-width-1-2@s uk-height-1-1 uk-flex uk-flex-middle uk-flex-center">
+          <div class="uk-position-relative">
+            <img :src="numberToPath(card.card)" width="" height="" alt="">
+            <div class="uk-position-absolute uk-position-bottom uk-margin-bottom uk-margin-left">
+              <a href="" class="uk-icon-button" uk-icon="push" @click.prevent="emit('select', card.card)"></a>
             </div>
           </div>
-        </transition>
-      </a>
+        </li>
+      </ul>
+
+      <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="" uk-slidenav-previous
+         uk-slider-item="previous"></a>
+      <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="" uk-slidenav-next
+         uk-slider-item="next"></a>
     </div>
-  </div>
+
+  </main>
 </template>
 
 <style lang="stylus" scoped>
@@ -39,58 +44,6 @@ const page = ref(props.page)
 @import "../../assets/utils.styl"
 @import "../../assets/metrics.styl"
 
-highlight(color)
-  gender-highlight(color, 0 0 1em, "")
-
-.cards
-  display flex
-  width 100%
-  height 100%
-  align-items center
-  justify-content center
-
-  .card
-    position relative
-    display flex
-    margin .5em
-    flex-grow 1
-    height 100%
-    justify-content center
-    align-items center
-
-    a
-      height 100%
-      display flex
-      align-items center
-      position relative
-
-      img
-        display inline-block
-        max-width 100%
-        max-height 100%
-
-        &.highlight-gender-Man
-          highlight($color-he)
-
-        &.highlight-gender-Woman
-          highlight($color-she)
-
-        &.highlight-gender-combined
-          highlight(gold)
-
-    .task
-      display flex
-      top 0
-      bottom 0
-      left 0
-      right 0
-      align-items center
-      position absolute
-      justify-content center
-      background transparent-background()
-
-@media (orientation: portrait)
-  .cards
-    flex-direction column
-    height calc(100% / var(--cards-count))
+img
+  max-height 100%
 </style>

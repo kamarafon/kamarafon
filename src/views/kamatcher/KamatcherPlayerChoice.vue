@@ -2,9 +2,7 @@
 import router from '@/router'
 import {useKamatcherStore} from '@/stores/kamatcher'
 import {cardsPage} from '@/common/cards'
-import KamatcherConfirmation from '@/views/kamatcher/KamatcherConfirmation.vue'
 import {Gender} from '@/common/gender'
-import {ref} from 'vue'
 import {parseIntParams} from '@/common/extensions'
 import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
 import * as _ from 'lodash'
@@ -14,7 +12,6 @@ const currentRoute = router.currentRoute.value
 const {cards, level, choice} = parseIntParams(currentRoute.params, ['cards', 'level', 'choice'])
 const currentPlayer: Gender = choice && Gender.Man || Gender.Woman
 const store = useKamatcherStore()
-const selectedCard = ref(null as number | null)
 const cardsPageIds = cardsPage(store.cardIds, cards, level)
 const page: ShowCard[] = cardsPageIds.map(card => ({card, gender: currentPlayer}))
 
@@ -30,28 +27,30 @@ const select = (id: number) => {
     query: {...currentRoute.query, c: cardWithTask()}
   })
 }
+
+const genderNames = {
+  [Gender.Woman]: 'она',
+  [Gender.Man]: 'он',
+}
+
+const isWomanChoice = currentPlayer === Gender.Woman
 </script>
 
 <template>
-  <main class="kamatcher" :class="'kamatcher-player-' + Gender[currentPlayer]" >
-    <kamatcher-show-cards :page="page" @select="selectedCard = $event"></kamatcher-show-cards>
-    <transition>
-      <kamatcher-confirmation v-if="selectedCard"
-                              @confirmed="select($event)"
-                              @reject="selectedCard = null"
-                              :card="selectedCard"></kamatcher-confirmation>
-    </transition>
+  <main class="kamatcher">
+    <kamatcher-show-cards :page="page" @select="select($event)"></kamatcher-show-cards>
+    <div class="uk-text-center uk-margin-top uk-position-absolute uk-position-top">
+      <span class="uk-label uk-text-uppercase" :class="{'uk-label-danger': isWomanChoice}">
+        Выбирает {{ genderNames[currentPlayer] }}
+      </span>
+      <div v-if="isWomanChoice">
+        <span class="uk-text-meta">он не подсматривает</span>
+      </div>
+    </div>
   </main>
 </template>
 
 <style lang="stylus" scoped>
 @import "../../assets/colors.styl"
 @import "../../assets/utils.styl"
-
-.kamatcher
-  &.kamatcher-player-Woman
-    gender-highlight($color-she)
-
-  &.kamatcher-player-Man
-    gender-highlight($color-he)
 </style>
