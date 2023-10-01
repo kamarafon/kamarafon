@@ -2,11 +2,11 @@
 import router from '@/router'
 import {parseIntParams} from '@/common/extensions'
 import {Gender} from '@/common/gender'
-import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
 import {ref} from 'vue'
 import {createCombinedTask, createSingleTask} from '@/views/kamatcher/tasks-generator'
 import type {ClothesByGender, ShowCard, Task} from '@/views/kamatcher/models'
 import * as _ from 'lodash'
+import {numberToPath} from '@/common/cards'
 
 const currentRoute = router.currentRoute.value
 const {cards, level, woman, man} = parseIntParams(
@@ -35,55 +35,55 @@ const pages = ref(
       task: createTask(clothesTask, gender, someHasClothes),
     } as ShowCard))
 )
-
-const toggleShowTask = () => pages.value.forEach(p => p.showTask = !p.showTask)
 </script>
 
 <template>
-  <main>
-    <kamatcher-show-cards :page="pages" class="pages" @select="toggleShowTask()">
-      <template #card-task="{card}">
-        <div class="task-description" v-if="card.task">
-          <div class="title">
-            {{ card.task.title }}
-          </div>
-          <div class="description" v-for="desc in card.task.description">
-            {{ desc }}
-          </div>
-          <div class="next-button">
-            <router-link
-              :to="{name: 'kamatcher-choice', params: {level: level + 1, cards}, query: {w: womanClothes, m: manClothes}}"
-              v-if="someHasClothes"
-              class="button">
-              продолжить
-            </router-link>
-            <router-link :to="{name: 'kamatcher-main'}"
-                         v-else
-                         class="button">
-              сыграть ещё
-            </router-link>
+  <main class="uk-overflow-auto" id="kamarafon">
+    <div class="uk-height-1-1 uk-child-width-1-2@s uk-flex-middle uk-flex-center"
+         :class="`uk-child-width-1-${pages.length}@m`"
+         uk-grid>
+
+      <div v-for="card in pages" class="uk-flex uk-flex-center">
+        <div class="uk-inline" uk-lightbox>
+          <a :href="numberToPath(card.card)">
+            <img :src="numberToPath(card.card)" :alt="card.task"/>
+          </a>
+          <div class="uk-overlay uk-padding-small uk-position-top">
+            <div class="uk-align-right">
+              <router-link
+                v-if="someHasClothes"
+                :to="{name: 'kamatcher-choice', params: {level: level + 1, cards}, query: {w: womanClothes, m: manClothes}}">
+
+                <span uk-icon="chevron-double-right" ratio="1.2"></span>
+              </router-link>
+              <router-link
+                v-else
+                :to="{name: 'kamatcher-main'}">
+                <span uk-icon="refresh" ratio="1.2"></span>
+              </router-link>
+            </div>
+            <span class="uk-label" :class="{'uk-label-danger': Gender.Woman === card.gender}">
+              {{ card.task.title }}
+            </span>
+            <ul class="uk-list uk-list-collapse uk-list-hyphen">
+              <li v-for="desc in card.task.description">
+                {{ desc }}
+              </li>
+            </ul>
           </div>
         </div>
-      </template>
-    </kamatcher-show-cards>
+      </div>
+    </div>
   </main>
 </template>
 
 <style lang="stylus" scoped>
-@import "../../assets/colors.styl"
+@import "../../assets/utils.styl"
+#kamarafon
+  img
+    max-height 100dvh
 
-.task-description
-  text-align center
-
-  .title
-    font-size 1.6em
-    color $color-primary-3
-
-  .description
-    color $color-secondary-b-0
-    font-size 1.2em
-
-  .next-button
-    margin-top 3em
-    text-align center
+  .uk-overlay
+    background transparent-background()
+    color white
 </style>

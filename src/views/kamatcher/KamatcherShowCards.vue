@@ -20,7 +20,8 @@ const page = ref(props.page)
       <ul
         class="uk-slider-items uk-child-width-1-1 uk-child-width-1-3@s uk-child-width-1-4@m uk-height-1-1 uk-flex uk-flex-center">
         <li v-for="card in page"
-            class="uk-width-1-4@l uk-width-1-3@m uk-width-1-2@s uk-height-1-1 uk-flex uk-flex-middle uk-flex-center">
+            :class="`uk-width-1-${page.length}@l` + ` uk-width-1-${Math.min(3, page.length)}@m`"
+            class=" uk-width-1-2@s uk-height-1-1 uk-flex uk-flex-middle uk-flex-center">
           <div class="uk-position-relative">
             <img :src="numberToPath(card.card)" width="" height="" alt="">
             <div class="uk-position-absolute uk-position-bottom uk-margin-bottom uk-margin-left">

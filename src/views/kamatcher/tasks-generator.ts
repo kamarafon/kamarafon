@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import {KamatcherClothesByGender} from '@/common/clothes'
 import type {ClothesByGender, Task} from '@/views/kamatcher/models'
 
-const forWho = {
+export const forWho = {
   [Gender.Woman]: {
     who: 'неё',
     thd: 'она',
@@ -30,8 +30,8 @@ export const createCombinedTask = (clothes: ClothesByGender, hasClothes: boolean
     .value()
 
   const basicTask = hasClothes
-    ? 'Повторите то, что вам обоим понравилось, только в оставшейся на вас одежде'
-    : 'Займитесь "этим", в выбранной позе, ведь на вас уже нет одежды'
+    ? 'повторите то, что вам обоим понравилось, только в оставшейся на вас одежде'
+    : 'займитесь "этим", в выбранной позе, ведь на вас уже нет одежды'
 
   return {
     title: 'Задание для двоих',
@@ -45,6 +45,6 @@ export const createSingleTask = (clothes: ClothesByGender, gender: Gender): Task
   const description = clothes[gender] > -1 && [clothesToUndressDescription(clothes[gender], gender)]
   return {
     title: 'Задание для ' + forWho[gender].who,
-    description: description || ['Продолжай играть'],
+    description: description || ['продолжай играть'],
   }
 }

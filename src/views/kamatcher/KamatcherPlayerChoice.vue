@@ -7,6 +7,7 @@ import {parseIntParams} from '@/common/extensions'
 import KamatcherShowCards from '@/views/kamatcher/KamatcherShowCards.vue'
 import * as _ from 'lodash'
 import type {ShowCard} from '@/views/kamatcher/models'
+import {forWho} from '@/views/kamatcher/tasks-generator'
 
 const currentRoute = router.currentRoute.value
 const {cards, level, choice} = parseIntParams(currentRoute.params, ['cards', 'level', 'choice'])
@@ -28,11 +29,6 @@ const select = (id: number) => {
   })
 }
 
-const genderNames = {
-  [Gender.Woman]: 'она',
-  [Gender.Man]: 'он',
-}
-
 const isWomanChoice = currentPlayer === Gender.Woman
 </script>
 
@@ -41,7 +37,7 @@ const isWomanChoice = currentPlayer === Gender.Woman
     <kamatcher-show-cards :page="page" @select="select($event)"></kamatcher-show-cards>
     <div class="uk-text-center uk-margin-top uk-position-absolute uk-position-top">
       <span class="uk-label uk-text-uppercase" :class="{'uk-label-danger': isWomanChoice}">
-        Выбирает {{ genderNames[currentPlayer] }}
+        Выбирает {{ forWho[currentPlayer].thd }}
       </span>
       <div v-if="isWomanChoice">
         <span class="uk-text-meta">он не подсматривает</span>
@@ -51,6 +47,4 @@ const isWomanChoice = currentPlayer === Gender.Woman
 </template>
 
 <style lang="stylus" scoped>
-@import "../../assets/colors.styl"
-@import "../../assets/utils.styl"
 </style>

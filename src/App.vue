@@ -10,7 +10,7 @@ import {RouterView} from 'vue-router'
         <component :is="Component" :key="route.fullPath"></component>
       </transition>
     </router-View>
-    <div class="uk-position-absolute uk-position-bottom-right uk-margin-right uk-margin-bottom">
+    <div class="uk-position-absolute uk-position-bottom-right uk-margin-right uk-margin-bottom" id="main-menu">
       <router-link :to="{name: 'main'}">
         <span uk-icon="home"></span>
       </router-link>
@@ -74,7 +74,8 @@ body
 .v-leave-to
   opacity 0
 
-.router-link-active
-  display none
+#main-menu
+  .router-link-active
+    display none
 
 </style>
