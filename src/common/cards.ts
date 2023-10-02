@@ -2,6 +2,11 @@ import * as _ from 'lodash'
 
 // last 141
 
+interface CategoryType {
+  title: string
+  ids: number[]
+}
+
 const categoriesByOriginIds = {
   simple: {
     title: 'Всё гениальное просто',
@@ -101,7 +106,7 @@ export const cardCategories = _.chain(categoriesByOriginIds)
     category.ids = category.ids.map(id => id + cardsOffset - 1)
     return category
   })
-  .value()
+  .value() as {[key in string]: CategoryType}
 
 export const numberToPath = (n: number): string => `/pages/365_dney_seksa-${_.padStart(`${n}`, pathNumbersCount, '0')}.jpg`
 export const createCartNumbers = () => new Array(cardsCount).fill(null).map((__, n) => n + cardsOffset)

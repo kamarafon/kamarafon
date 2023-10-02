@@ -3,8 +3,8 @@ import router from '@/router'
 import {cardCategories, numberToPath} from '@/common/cards'
 
 const currentRoute = router.currentRoute.value
-const categoryName = currentRoute.params.category
-const page = +currentRoute.query.page || 0
+const categoryName = currentRoute.params.category.toString()
+const page = +(currentRoute.query.page ?? 0)
 const count = 24
 const category = cardCategories[categoryName]
 const categoryIds = category.ids
@@ -45,7 +45,7 @@ const totalPages = Math.ceil(categoryIds.length / count)
 
       <div v-for="id in ids">
         <a :href="numberToPath(id)">
-          <img :src="numberToPath(id)" :alt="id"/>
+          <img :src="numberToPath(id)" alt="card"/>
         </a>
       </div>
     </div>
