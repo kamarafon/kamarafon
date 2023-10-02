@@ -1,8 +1,8 @@
 import {Gender} from '@/common/gender'
-import type {KamatcherClothes} from '@/common/clothes'
 import * as _ from 'lodash'
-import {KamatcherClothesByGender} from '@/common/clothes'
-import type {ClothesByGender, Task} from '@/views/kamatcher/models'
+import type {ClothesToDrop, Task} from '@/views/kamatcher/models'
+
+export const clothesCount = 5
 
 export const forWho = {
   [Gender.Woman]: {
@@ -15,18 +15,16 @@ export const forWho = {
   },
 }
 
-
-const clothesToUndressDescription = (clothes: KamatcherClothes, gender: Gender): string => {
-  const parts = KamatcherClothesByGender[gender][clothes]
-  return `${forWho[gender].thd} снимает ${parts[1] || parts[0]}`
+const clothesToUndressDescription = (gender: Gender): string => {
+  return `${forWho[gender].thd} снимает один элемент одежды`
 }
 
-export const createCombinedTask = (clothes: ClothesByGender, hasClothes: boolean): Task => {
+export const createCombinedTask = (clothes: ClothesToDrop, hasClothes: boolean): Task => {
   const clothesToRemove: string[] = _.chain(clothes)
     .toPairs()
-    .filter(([__, v]) => v > -1)
+    .filter(([__, v]) => v)
     .fromPairs()
-    .map((c, g) => clothesToUndressDescription(c, +g))
+    .map((c, g) => clothesToUndressDescription(+g))
     .value()
 
   const basicTask = hasClothes
@@ -41,8 +39,8 @@ export const createCombinedTask = (clothes: ClothesByGender, hasClothes: boolean
     ]
   }
 }
-export const createSingleTask = (clothes: ClothesByGender, gender: Gender): Task => {
-  const description = clothes[gender] > -1 && [clothesToUndressDescription(clothes[gender], gender)]
+export const createSingleTask = (gender: Gender, dropped: boolean): Task => {
+  const description = dropped && [clothesToUndressDescription(gender)]
   return {
     title: 'Задание для ' + forWho[gender].who,
     description: description || ['продолжай играть'],

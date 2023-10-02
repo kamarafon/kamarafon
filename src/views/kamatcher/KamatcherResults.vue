@@ -4,7 +4,7 @@ import {parseIntParams} from '@/common/extensions'
 import {Gender} from '@/common/gender'
 import {ref} from 'vue'
 import {createCombinedTask, createSingleTask} from '@/views/kamatcher/tasks-generator'
-import type {ClothesByGender, ShowCard, Task} from '@/views/kamatcher/models'
+import type {ClothesToDrop, ShowCard, Task} from '@/views/kamatcher/models'
 import * as _ from 'lodash'
 import {numberToPath} from '@/common/cards'
 
@@ -14,24 +14,27 @@ const {cards, level, woman, man} = parseIntParams(
   ['cards', 'level', 'woman', 'man']
 )
 let {w: womanClothes, m: manClothes, c: taskCard} = parseIntParams(currentRoute.query, ['w', 'm', 'c'])
-const clothesTask: ClothesByGender = {} as ClothesByGender
-if (woman === taskCard) clothesTask[Gender.Woman] = --womanClothes
-if (man === taskCard) clothesTask[Gender.Man] = --manClothes
-const someHasClothes = womanClothes > 0 || manClothes > 0
+const clothesTask: {[key in Gender]: boolean} = {
+  [Gender.Woman]: false,
+  [Gender.Man]: false,
+}
+if (woman === taskCard) clothesTask[Gender.Woman] = (--womanClothes >= 0)
+if (man === taskCard) clothesTask[Gender.Man] = (--manClothes >= 0)
+const someHasClothes = (womanClothes + manClothes) > 0
 
-const createTask = (clothes: ClothesByGender, gender: Gender, hasClothes: boolean): Task => {
+const createTask = (clothes: ClothesToDrop, gender: Gender, hasClothes: boolean): Task => {
   if (gender < 0) return createCombinedTask(clothesTask, hasClothes)
-  return createSingleTask(clothesTask, gender)
+  return createSingleTask(gender, clothesTask[gender])
 }
 
 const choiceResults = [[Gender.Woman, woman], [Gender.Man, man]].filter(_.constant(woman !== man))
+const sameResults = choiceResults.length === 0
 
 const pages = ref(
   (choiceResults.length ? choiceResults : [[-1 as Gender, woman]])
     .map(([gender, card]) => ({
       card,
       gender,
-      showTask: false,
       task: createTask(clothesTask, gender, someHasClothes),
     } as ShowCard))
 )
@@ -51,7 +54,7 @@ const pages = ref(
           <div class="uk-overlay uk-padding-small uk-position-top">
             <div class="uk-align-right">
               <router-link
-                v-if="someHasClothes"
+                v-if="someHasClothes || !sameResults"
                 :to="{name: 'kamatcher-choice', params: {level: level + 1, cards}, query: {w: womanClothes, m: manClothes}}">
 
                 <span uk-icon="chevron-double-right" ratio="1.2"></span>

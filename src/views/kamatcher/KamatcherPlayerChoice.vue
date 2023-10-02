@@ -45,6 +45,3 @@ const isWomanChoice = currentPlayer === Gender.Woman
     </div>
   </main>
 </template>
-
-<style lang="stylus" scoped>
-</style>
