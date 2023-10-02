@@ -1,8 +1,10 @@
 import {ref} from 'vue'
-import {createCartNumbers, randomizeCardNumbers} from '@/common/cards'
+import {cardCategories, categoryNames, createCartNumbers, randomizeCardNumbers} from '@/common/cards'
+import * as _ from 'lodash'
 
 interface StoreManager {
   persist(state: any): void
+
   load<S>(defaultData: S): S
 }
 
@@ -35,13 +37,17 @@ export function createStoreWithCardIds(storeManager: StoreManager) {
       }
     },
     actions: {
-      prepareGame() {
+      prepareGame(categories: string[] = []) {
         const self = this as any
-        self.cardIds = prepareCards()
+        self.cardIds = prepareCards(categories)
         storeManager.persist(self.$state)
       },
     },
   }
 }
 
-export const prepareCards = () => randomizeCardNumbers(createCartNumbers())
+export const prepareCards = (categories: string[]) => {
+  if (_.isEmpty(categories)) categories = categoryNames
+  const idsByCategories = _.chain(categories).map(c => cardCategories[c].ids).flatten().value()
+  return randomizeCardNumbers(createCartNumbers().filter(id => idsByCategories.includes(id)))
+}
