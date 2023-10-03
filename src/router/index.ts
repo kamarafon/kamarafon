@@ -9,6 +9,7 @@ import KamatcherPlayerChoice from '@/views/kamatcher/KamatcherPlayerChoice.vue'
 import KamatcherResults from '@/views/kamatcher/KamatcherResults.vue'
 import KamategoriesMain from '@/views/kamategories/KamategoriesMain.vue'
 import KamategoriesShowCategory from '@/views/kamategories/KamategoriesShowCategory.vue'
+import Playground from '@/views/playground/Playground.vue'
 
 const pageTitleUpdate = (route: RouteLocationNormalized) => {
   const pageTitle = route.meta.title
@@ -90,6 +91,12 @@ const router = createRouter({
       path:'/kamategories/:category',
       name: 'kamategories-show',
       component: KamategoriesShowCategory,
+    },
+
+    {
+      path: '/playground',
+      name: 'playground',
+      component: Playground,
     }
   ],
 })
