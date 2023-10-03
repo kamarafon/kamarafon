@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {cardCategories, CategoryTag, getCategoryIdsByName, newCategories, numberToPath} from '@/common/cards'
+import {CategoryTag, getCategoryIdsByName, newCategories, numberToPath} from '@/common/cards'
 import {ref} from 'vue'
 import * as _ from 'lodash'
 
 const selectedCategory = ref(_.first(newCategories)!)
-const selectedTag = ref(_.first(_.values(CategoryTag)))
+const selectedTag = ref(_.first(_.values(CategoryTag))!)
 
 </script>
 

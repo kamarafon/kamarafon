@@ -5,7 +5,8 @@ import {useKamarafonStore} from '@/stores/kamarafon'
 import {numberToPath} from '@/common/cards'
 import uk from 'uikit'
 import UIkit from 'uikit'
-import UIkitModalElement = UIkit.UIkitModalElement
+
+type UIkitModalElement = UIkit.UIkitModalElement
 
 const store = useKamarafonStore()
 const level = +router.currentRoute.value.params.level
