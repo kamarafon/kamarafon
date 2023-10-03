@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {cardCategories, numberToPath} from '@/common/cards'
+import {cardCategories, newCategories, numberToPath} from '@/common/cards'
 import {ref} from 'vue'
 import * as _ from 'lodash'
 
@@ -12,6 +12,15 @@ const combine = () => {
     .map(name => cardCategories[name].ids)
   images.value = _.intersection(ids1, ids2)
 }
+
+const newCatIds = _.chain(newCategories)
+  .map(c => _.values(c.ids))
+  .flatten()
+  .reduce((a, b) => _.uniq([... a, ...b]), [])
+  .sort((n1, n2) => n1 - n2)
+  .value()
+
+console.log(_.difference(_.range(1, 366), newCatIds))
 
 </script>
 
