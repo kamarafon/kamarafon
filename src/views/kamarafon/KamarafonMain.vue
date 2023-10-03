@@ -14,7 +14,14 @@ const categoriesForm = _.chain(categoryNames)
 const selectedCategories = ref(categoriesForm)
 
 const prepareGame = () => {
-  store.prepareGame(_.chain(selectedCategories.value).toPairs().filter(([__, v]) => v).fromPairs().keys().value())
+  store.prepareGame(
+    _.chain(selectedCategories.value)
+      .toPairs()
+      .filter(([__, v]) => v)
+      .fromPairs()
+      .keys()
+      .value()
+  )
   router.push({name: 'kamarafon-game', params: {level: 0}})
 }
 </script>
