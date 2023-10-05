@@ -1,5 +1,6 @@
 import {ref} from 'vue'
-import {createCartNumbers, randomizeCardNumbers} from '@/common/cards'
+import {cardCategories, categoryTags, randomizeCardNumbers} from '@/common/cards'
+import type {CategoryType} from '@/common/cards'
 import * as _ from 'lodash'
 
 interface StoreManager {
@@ -37,15 +38,29 @@ export function createStoreWithCardIds(storeManager: StoreManager) {
       }
     },
     actions: {
-      prepareGame(categories: string[] = []) { // todo update new categories
+      prepareGame(categories: string[] = [], tags: string[] = []) { // todo update new categories
         const self = this as any
-        self.cardIds = prepareCards()
+        self.cardIds = prepareCards(categories, tags)
         storeManager.persist(self.$state)
       },
     },
   }
 }
 
-export const prepareCards = () => {
-  return randomizeCardNumbers(createCartNumbers())
+export const filterCategories = (categories: CategoryType[], categoryNames: string[], tags: string[]): number[] =>
+  _.chain(categories)
+    .filter(c => categoryNames.includes(c.name))
+    .map(c => _.pick(c.ids, tags))
+    .map(ids => _.values(_.pick(ids, tags)))
+    .flattenDeep()
+    .uniq()
+    .sort(_.subtract)
+    .value()
+
+export const prepareCards = (categoryNames: string[], tags: string[]): number[] => {
+  if (_.isEmpty(categoryNames)) categoryNames = cardCategories.map(c => c.name)
+  if (_.isEmpty(tags)) tags = categoryTags()
+  let catIds = filterCategories(cardCategories, categoryNames, tags)
+
+  return randomizeCardNumbers(catIds)
 }

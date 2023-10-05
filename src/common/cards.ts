@@ -4,13 +4,18 @@ export enum CategoryTag {
   Simple = 'просто', Tricky = 'хитро', Athletics = 'сложно', OnlyShe = 'она', OnlyHe = 'он', SixNine = '69'
 }
 
-interface NewCategoryType {
+export interface CategoryType {
   title: string
   name: string
   ids: { [key in CategoryTag]?: number[] }
 }
 
-export const newCategories: NewCategoryType[] = [
+const pathNumbersCount = 3
+const cardsOffset = 4
+const cardsCount = 365
+const offsetCategoryIds = (id: number) => id + cardsOffset - 1
+
+export const cardCategories: CategoryType[] = [
   {
     title: 'на кровати',
     name: 'bed',
@@ -77,16 +82,24 @@ export const newCategories: NewCategoryType[] = [
       [CategoryTag.OnlyHe]: [288,],
     }
   },
-]
+].map(category => ({
+  ...category,
+  ids: _.mapValues(category.ids, ids => ids?.map(offsetCategoryIds) ?? [])
+}))
 
-export const getCategoryIdsByName = (category: NewCategoryType, tag: CategoryTag): number[] => {
-  return category.ids[tag]?.map(offsetCategoryIds) ?? []
+export const categoryIdsByName = (category: CategoryType, tag: CategoryTag): number[] => {
+  return category.ids[tag] ?? []
 }
+export const firstImageFromCategory = (category: CategoryType, tag?: CategoryTag): number => _.first(
+  category.ids[tag ?? CategoryTag.Simple]
+) ?? 1
 
-const pathNumbersCount = 3
-const cardsOffset = 4
-const cardsCount = 365
-const offsetCategoryIds = (id: number) => id + cardsOffset - 1
+export const categoryTags = (): string[] => Object.values(CategoryTag)
+export const firstImageByTag = (tag: CategoryTag): number => _.chain(cardCategories)
+  .filter(cat => !!cat.ids[tag])
+  .map(cat => _.first(cat.ids[tag])!)
+  .first()
+  .value()
 
 export const numberToPath = (n: number): string => `/pages/365_dney_seksa-${_.padStart(`${n}`, pathNumbersCount, '0')}.jpg`
 export const createCartNumbers = () => new Array(cardsCount).fill(null).map((__, n) => n + cardsOffset)

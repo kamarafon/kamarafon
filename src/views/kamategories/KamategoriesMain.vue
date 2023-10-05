@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {CategoryTag, getCategoryIdsByName, newCategories, numberToPath} from '@/common/cards'
+import {CategoryTag, categoryIdsByName, cardCategories, numberToPath} from '@/common/cards'
 import {ref} from 'vue'
 import * as _ from 'lodash'
 
-const selectedCategory = ref(_.first(newCategories)!)
+const selectedCategory = ref(_.first(cardCategories)!)
 const selectedTag = ref(_.first(_.values(CategoryTag))!)
 
 </script>
@@ -18,7 +18,7 @@ const selectedTag = ref(_.first(_.values(CategoryTag))!)
       </ul>
     </div>
 
-    <template v-for="scope in [{ids: getCategoryIdsByName(selectedCategory, selectedTag)}]">
+    <template v-for="scope in [{ids: categoryIdsByName(selectedCategory, selectedTag)}]">
       <div v-if="!scope.ids.length" class="uk-flex uk-height-1-1 uk-flex-middle uk-flex-center">
         <span class="uk-label uk-text-uppercase">ой, ничего нет</span>
       </div>
@@ -38,7 +38,7 @@ const selectedTag = ref(_.first(_.values(CategoryTag))!)
 
     <div class="uk-width-1-1">
       <ul class="uk-flex-center" uk-tab>
-        <li class="uk-active" v-for="category in newCategories">
+        <li class="uk-active" v-for="category in cardCategories">
           <a href="#" @click="selectedCategory = category">{{ category.title }}</a>
         </li>
       </ul>

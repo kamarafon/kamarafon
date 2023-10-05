@@ -2,10 +2,50 @@
 import WelcomeGame from '@/components/WelcomeGame.vue'
 import {useKamarafonStore} from '@/stores/kamarafon'
 import router from '@/router'
+import {
+  cardCategories,
+  CategoryTag,
+  categoryTags,
+  firstImageByTag,
+  firstImageFromCategory,
+  numberToPath
+} from '@/common/cards'
+import {ref} from 'vue'
+import * as _ from 'lodash'
 
 const store = useKamarafonStore()
+const filters = [
+  cardCategories.map(category => ({
+    title: category.title,
+    name: category.name,
+    image: numberToPath(firstImageFromCategory(category))
+  })),
+  categoryTags().map(tag => ({
+    title: tag,
+    name: tag,
+    image: numberToPath(firstImageByTag(tag as CategoryTag))
+  }))
+]
+
+const forms = ref(
+  filters.map(
+    filter => _.fromPairs(
+      filter.map(({name}) => [name, true])
+    )
+  )
+)
+
 const prepareGame = () => {
-  store.prepareGame()
+  const [categories, tags] = forms.value
+    .map(form =>
+      _.chain(form)
+        .toPairs()
+        .filter(([__, v]) => v)
+        .map(([k, __]) => k)
+        .value()
+    )
+
+  store.prepareGame(categories, tags)
   router.push({name: 'kamarafon-game', params: {level: 0}})
 }
 </script>
@@ -32,9 +72,24 @@ const prepareGame = () => {
         </p>
       </template>
     </welcome-game>
-    <div class="uk-margin-bottom uk-overflow-auto uk-height-large">
+    <div class="uk-overflow-auto uk-height-large">
       <div class="uk-text-center uk-margin-bottom">
         <button class="uk-button uk-button-danger" @click="prepareGame()">начать</button>
+      </div>
+
+      <div uk-grid class="uk-child-width-1-2 uk-grid-collapse">
+        <div v-for="(filter, i) in filters">
+          <div uk-grid class="uk-child-width-1-6@l uk-child-width-1-3@m uk-child-width-1-2 uk-grid-collapse">
+            <div v-for="f in filter" class="uk-margin-top">
+              <label>
+                <input type="checkbox" class="uk-hidden" v-model="forms[i][f.name]"/>
+                <img :src="f.image" alt="">
+                <span class="uk-label uk-width-1-1 uk-text-center"
+                      :class="{'uk-label-danger': forms[i][f.name]}">{{ f.title }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
