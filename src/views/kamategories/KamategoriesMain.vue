@@ -27,14 +27,15 @@ const selectedTag = ref(_.first(_.values(CategoryTag))!)
            class="uk-child-width-1-2 uk-child-width-1-6@l uk-child-width-1-4@m uk-overflow-auto uk-height-1-1"
            uk-lightbox="animation: slide">
 
-        <div v-for="id in scope.ids">
-          <a :href="numberToPath(id)">
-            <img :src="numberToPath(id)"/>
-          </a>
-        </div>
+        <transition-group>
+          <div v-for="id in scope.ids" :key="id">
+            <a :href="numberToPath(id)">
+              <img :src="numberToPath(id)"/>
+            </a>
+          </div>
+        </transition-group>
       </div>
     </template>
-
 
     <div class="uk-width-1-1">
       <ul class="uk-flex-center" uk-tab>
